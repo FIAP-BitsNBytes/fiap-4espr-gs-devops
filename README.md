@@ -20,7 +20,9 @@
 | **Indicadores de impacto** | Alunos ativos por bairro · inscrições em monitorias · vagas ofertadas × preenchidas · voluntários ativos · retenção de alunos (expostos de forma agregada em `/api/v1/indicadores`). |
 | **ODS conectados** | ODS 4 (Educação de Qualidade) e ODS 10 (Redução das Desigualdades). |
 
-**Equipe BitsNBytes (4ESPR):** Jó Sales (RM 552679) · Miguel Garcez de Carvalho (RM 553768) · Vinicius Souza e Silva (RM 552781) · Edson Leonardo (RM 553737) · Eduardo (RM a preencher).
+**Equipe BitsNBytes (4ESPR):** Jó Sales (RM 552679) · Miguel Garcez de Carvalho (RM 553768) · Vinicius Souza e Silva (RM 552781) · Edson Leonardo (RM 553737) · Eduardo Mazelli (RM 553236).
+
+**Relatório da entrega (PDF):** [docs/entrega/entrega-secure-devops.pdf](docs/entrega/entrega-secure-devops.pdf)
 
 ## O que esta entrega cobre
 
