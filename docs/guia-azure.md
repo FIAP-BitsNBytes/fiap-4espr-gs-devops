@@ -50,7 +50,7 @@ Salve os prints em `docs/evidencias/` com exatamente estes nomes; o gerador do P
 | `04-app-service-tls.png` | Web App > Configuration/TLS: HTTPS Only, TLS 1.2, FTP desativado | Deploy / Segurança |
 | `05-actions-verde.png` | Execução do workflow com os 4 jobs verdes | CI/CD |
 | `06-actions-smoke.png` | Log do passo “Smoke test” mostrando a versão publicada | CI/CD |
-| `07-deployment-center.png` | Web App > Deployment Center > Logs com o deploy vindo do GitHub | CI/CD |
+| `07-deployment-center.png` | Histórico de execuções do workflow no GitHub Actions (ou Deployment Center > Logs) | CI/CD |
 | `08-key-vault-segredos.png` | Lista de segredos do Key Vault (só os nomes) | Segurança |
 | `09-app-settings-kv.png` | Environment variables do Web App com as referências ao Key Vault resolvidas (marca verde) | Segurança |
 | `10-iam-rbac.png` | Access control (IAM) > Role assignments do Resource Group e do Key Vault | Segurança |
