@@ -65,7 +65,7 @@ jobs:
         run: |
           echo "${GITHUB_SHA::7}" > VERSAO
           zip -r release.zip app wsgi.py requirements.txt VERSAO
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: release
           path: release.zip
