@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block titulo %}Aviso de Privacidade — Apoio Escolar Periférico{% endblock %}
+{% block conteudo %}
+<h1>Aviso de Privacidade</h1>
+<p class="nota">Versão {{ VERSAO_TERMO }} · escrito em linguagem simples, como pede a LGPD para crianças e adolescentes (art. 14, §6º).</p>
+
+<h2>Quem cuida dos seus dados</h2>
+<p>A equipe BitsNBytes, responsável pelo projeto acadêmico Apoio Escolar Periférico (FIAP Global Solution 2026.2).</p>
+
+<h2>O que guardamos e para quê</h2>
+<table>
+  <thead><tr><th scope="col">Dado</th><th scope="col">Para quê</th></tr></thead>
+  <tbody>
+    <tr><td>Apelido e senha (a senha fica embaralhada, ninguém consegue ler)</td><td>Você entrar na sua conta</td></tr>
+    <tr><td>Série e faixa de idade</td><td>Mostrar monitorias e materiais do seu nível</td></tr>
+    <tr><td>Bairro</td><td>Mostrar monitorias perto de você e saber onde falta reforço</td></tr>
+    <tr><td>E-mail do responsável (menores de 18) ou do voluntário, cifrado</td><td>Pedir a autorização do responsável; a coordenação falar com o voluntário</td></tr>
+    <tr><td>Inscrições em monitorias</td><td>Organizar as turmas</td></tr>
+  </tbody>
+</table>
+
+<h2>O que não guardamos</h2>
+<p>Nome completo, CPF, RG, endereço com rua e número, telefone, data de nascimento, fotos, documentos, localização do celular. Não usamos cookies de propaganda nem rastreadores.</p>
+
+<h2>Menores de 18 anos</h2>
+<p>O cadastro só fica completo depois que um responsável autoriza. Se ele não autorizar, apagamos o cadastro na hora. Tudo é feito pensando no melhor interesse do estudante.</p>
+
+<h2>Com quem compartilhamos</h2>
+<p>Com ninguém para fins comerciais. O voluntário da monitoria vê só o apelido e a série de quem se inscreveu. O tutor virtual recebe só a pergunta, sem dizer quem perguntou. Os dados ficam em servidores da Microsoft Azure no Brasil (região Brazil South).</p>
+
+<h2>Seus direitos</h2>
+<ul>
+  <li><strong>Ver e baixar</strong> seus dados: no seu painel, botão “Baixar meus dados”.</li>
+  <li><strong>Apagar</strong> sua conta e seus dados: no seu painel, “Apagar minha conta”. É na hora.</li>
+  <li><strong>Corrigir</strong> ou tirar dúvidas: fale com a coordenação do projeto{% if CONTATO_PRIVACIDADE %} pelo e-mail <a href="mailto:{{ CONTATO_PRIVACIDADE }}">{{ CONTATO_PRIVACIDADE }}</a>{% endif %}.</li>
+</ul>
+
+<h2>Por quanto tempo</h2>
+<p>Enquanto a conta existir. Contas sem autorização do responsável são apagadas depois de 30 dias.</p>
+{% endblock %}

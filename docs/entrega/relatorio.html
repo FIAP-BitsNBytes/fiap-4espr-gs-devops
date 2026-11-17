@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Apoio Escolar Periférico — Secure DevOps Tools & Cloud Computing</title>
+<style>
+  @page { size: A4; }
+  * { box-sizing: border-box; }
+  body { font-family: "Segoe UI", system-ui, Arial, sans-serif; color: #1c2430; font-size: 10.5pt; line-height: 1.45; margin: 0; }
+  h1 { font-size: 24pt; line-height: 1.15; margin: 0 0 6pt; color: #0b5d4e; }
+  h2 { font-size: 15pt; color: #0b5d4e; border-bottom: 2px solid #0b5d4e; padding-bottom: 3pt; margin: 0 0 8pt; break-before: page; }
+  h2.sem-quebra { break-before: auto; margin-top: 16pt; }
+  h3 { font-size: 11.5pt; margin: 12pt 0 4pt; break-after: avoid; }
+  p { margin: 0 0 7pt; }
+  a { color: #0b5d4e; }
+  table { width: 100%; border-collapse: collapse; margin: 6pt 0 10pt; font-size: 9.5pt; break-inside: avoid; }
+  th, td { border: 1px solid #cfcabb; padding: 4pt 6pt; text-align: left; vertical-align: top; }
+  th { background: #efece2; }
+  code { font-family: Consolas, "Courier New", monospace; font-size: 9pt; background: #f3f1ea; padding: 0 2pt; }
+  .capa { padding-top: 30mm; }
+  .capa .sub { font-size: 13pt; color: #4a5565; margin-bottom: 18pt; }
+  .links { border: 2px solid #0b5d4e; border-radius: 6pt; padding: 10pt 12pt; margin: 14pt 0; font-size: 11.5pt; }
+  .links p { margin: 3pt 0; }
+  .pontos { color: #4a5565; font-size: 9.5pt; margin-top: -4pt; }
+  .falta { background: #fff3c4; border: 1px dashed #a4262c; color: #a4262c; padding: 0 4pt; font-weight: 600; }
+  figure { margin: 8pt 0 12pt; break-inside: avoid; }
+  figure img { max-width: 100%; max-height: 105mm; border: 1px solid #cfcabb; display: block; margin: 0 auto; }
+  figcaption { font-size: 9pt; color: #4a5565; margin-top: 3pt; text-align: center; }
+  .vazio { border: 2px dashed #a4262c; color: #a4262c; background: #fffaf0; height: 42mm; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; font-weight: 700; }
+  .vazio code { background: none; font-weight: 400; color: #4a5565; }
+  .dupla { display: grid; grid-template-columns: 1fr 1fr; gap: 8pt; }
+  .diagrama img { width: 100%; border: 0; max-height: none; }
+  .nota { font-size: 9.5pt; color: #4a5565; }
+</style>
+</head>
+<body>
+
+<section class="capa">
+  <p class="sub">FIAP · Global Solution 2026.2 · CitizenTech · Engenharia de Software 4º ano (4ESPR)</p>
+  <h1>Apoio Escolar Periférico</h1>
+  <p class="sub">Secure DevOps Tools &amp; Cloud Computing — <strong>CitizenTech no Ar</strong><br>Prof. Gabriel Henrique Boyczuk Arcanjo</p>
+
+  <div class="links">
+    <p><strong>URL do MVP:</strong> {{URL_MVP}}</p>
+    <p><strong>Repositório:</strong> {{URL_REPO}}</p>
+  </div>
+
+  <table>
+    <tr><th>Equipe BitsNBytes</th><th>RM</th></tr>
+    <tr><td>Jó Sales</td><td>552679</td></tr>
+    <tr><td>Miguel Garcez de Carvalho</td><td>553768</td></tr>
+    <tr><td>Vinicius Souza e Silva</td><td>552781</td></tr>
+    <tr><td>Edson Leonardo</td><td>553737</td></tr>
+    <tr><td>Eduardo</td><td><span class="falta">PREENCHER RM</span></td></tr>
+  </table>
+
+  <h3>Ficha Técnica do MVP (resumo)</h3>
+  <table>
+    <tr><th style="width:30%">Produto</th><td>Apoio Escolar Periférico — plataforma que conecta estudantes de escolas públicas de periferia a monitorias voluntárias, materiais gratuitos e um tutor virtual.</td></tr>
+    <tr><th>Cidadão e território</th><td>Estudantes do 6º ano do EF à 3ª série do EM em comunidades periféricas (piloto: periferia de São Paulo), seus responsáveis e voluntários.</td></tr>
+    <tr><th>Problema</th><td>Falta reforço escolar gratuito perto de casa e um ponto de encontro seguro entre estudantes menores e voluntários.</td></tr>
+    <tr><th>Papel desta disciplina</th><td>Produção: o MVP no ar na Azure, com CI/CD, segredos fora do código, acesso por papel, monitoramento com alerta e proteção de dados de menores (LGPD by design).</td></tr>
+    <tr><th>ODS</th><td>ODS 4 (Educação de Qualidade) e ODS 10 (Redução das Desigualdades).</td></tr>
+  </table>
+  <p class="nota">A Ficha Técnica completa abre o README do repositório.</p>
+</section>
+
+<h2>1. Arquitetura</h2>
+<figure class="diagrama"><img src="{{DIAGRAMA}}" alt="Diagrama da arquitetura"><figcaption>Componentes, fluxo de deploy e integrações com as outras disciplinas.</figcaption></figure>
+<table>
+  <tr><th style="width:28%">Decisão</th><th>Justificativa</th></tr>
+  <tr><td>App Service Linux (PaaS), Brazil South</td><td>Serviço visto no semestre; HTTPS, TLS e identidade gerenciada sem administrar servidor; dados de menores ficam no Brasil.</td></tr>
+  <tr><td>HTML renderizado no servidor</td><td>Páginas de poucos kB, sem scripts de terceiros: funcionam em celular de entrada e conexão ruim.</td></tr>
+  <tr><td>SQLite em <code>/home/data</code></td><td>Custo zero e nenhuma credencial de banco. Uso de ORM permite migrar para PostgreSQL trocando uma variável.</td></tr>
+  <tr><td>Key Vault + Managed Identity</td><td>Nenhum segredo no código, no repositório ou no pipeline.</td></tr>
+  <tr><td>Deploy com OIDC</td><td>O GitHub não guarda senha da Azure; token de minutos, restrito ao environment <code>production</code>.</td></tr>
+  <tr><td>Application Insights (OpenTelemetry)</td><td>Requisições, falhas e logs em um lugar, com alertas por e-mail.</td></tr>
+</table>
+
+<h2>2. Deploy</h2>
+<p class="pontos">Critério: Deploy — 3,5 pontos</p>
+<p>O MVP roda em um Azure App Service Linux (Python 3.12, gunicorn), dentro de um único Resource Group com tags. Só aceita HTTPS, com TLS mínimo 1.2, FTP e autenticação básica de deploy desligados. O App Service sonda <code>/health</code>, que testa o banco e informa a versão publicada. Toda a infraestrutura é criada por um script Azure CLI idempotente (<code>infra/provisionar.sh</code>).</p>
+<figure data-print="01-site-no-ar.png">MVP aberto pela URL pública, com HTTPS.</figure>
+<div class="dupla">
+  <figure data-print="02-health.png">Endpoint <code>/health</code> com status e versão.</figure>
+  <figure data-print="04-app-service-tls.png">HTTPS Only, TLS 1.2 e FTP desativado.</figure>
+</div>
+<figure data-print="03-resource-group.png">Resource Group com todos os recursos e tags.</figure>
+
+<h2>3. CI/CD</h2>
+<p class="pontos">Critério: CI/CD — 3,0 pontos</p>
+<p>Cada commit na <code>main</code> dispara o workflow do GitHub Actions (<code>.github/workflows/ci-cd.yml</code>). O deploy só acontece se todas as verificações passarem, e só é considerado concluído quando o site responde saudável com a versão do commit.</p>
+<table>
+  <tr><th style="width:22%">Job</th><th>O que faz</th></tr>
+  <tr><td>qualidade</td><td>ruff (lint com regras de segurança), pytest com 25 testes e cobertura mínima de 80%, bandit, pip-audit.</td></tr>
+  <tr><td>segredos</td><td>gitleaks em todo o histórico do repositório.</td></tr>
+  <tr><td>pacote</td><td>Grava o hash do commit em <code>VERSAO</code> e gera o pacote só com o necessário.</td></tr>
+  <tr><td>deploy</td><td>Login OIDC na Azure, publicação no App Service e smoke test em <code>/health</code> conferindo a versão.</td></tr>
+</table>
+<p>Complementos: CodeQL semanal e a cada push; Dependabot para dependências Python e actions.</p>
+<figure data-print="05-actions-verde.png">Execução do workflow com os quatro jobs concluídos.</figure>
+<div class="dupla">
+  <figure data-print="06-actions-smoke.png">Smoke test confirmando a versão publicada.</figure>
+  <figure data-print="07-deployment-center.png">Deployment Center com o deploy vindo do GitHub.</figure>
+</div>
+
+<h2>4. Segurança e LGPD by design</h2>
+<p class="pontos">Critério: Segurança — 3,0 pontos</p>
+<h3>Segredos fora do código</h3>
+<p>As chaves da aplicação são geradas pelo script direto no Key Vault, sem aparecer na tela. O App Service lê cada uma por referência (<code>@Microsoft.KeyVault(...)</code>) com sua identidade gerenciada. Em produção a aplicação não sobe se um segredo obrigatório faltar. O repositório é varrido por gitleaks a cada commit.</p>
+<div class="dupla">
+  <figure data-print="08-key-vault-segredos.png">Segredos no Key Vault (somente nomes).</figure>
+  <figure data-print="09-app-settings-kv.png">App Settings como referências ao Key Vault.</figure>
+</div>
+<h3>Acesso por papel</h3>
+<table>
+  <tr><th>Identidade</th><th>Papel</th><th>Escopo</th></tr>
+  <tr><td>Identidade gerenciada do Web App</td><td>Key Vault Secrets User (leitura)</td><td>Somente o Key Vault</td></tr>
+  <tr><td>GitHub Actions (OIDC)</td><td>Website Contributor</td><td>Somente o Web App</td></tr>
+  <tr><td>Quem provisiona</td><td>Key Vault Secrets Officer</td><td>Somente o Key Vault</td></tr>
+  <tr><td>Professor e integrantes</td><td>Reader</td><td>Resource Group</td></tr>
+</table>
+<p>Dentro da aplicação há três papéis: aluno, voluntário (precisa de aprovação) e coordenação. O voluntário vê só apelido e série dos inscritos; a coordenação vê indicadores agregados, com grupos menores que 5 ocultos.</p>
+<div class="dupla">
+  <figure data-print="10-iam-rbac.png">Atribuições de papel (IAM).</figure>
+  <figure data-print="11-oidc-federado.png">Credencial federada do GitHub (OIDC).</figure>
+</div>
+<h3>Proteção de dados de menores</h3>
+<table>
+  <tr><th style="width:30%">Princípio</th><th>Como foi aplicado</th></tr>
+  <tr><td>Minimização</td><td>Apelido, série, bairro e faixa de idade. Sem nome completo, CPF, endereço, telefone, data de nascimento, foto ou documento.</td></tr>
+  <tr><td>Consentimento do responsável</td><td>Conta de menor de 18 anos fica pendente até o responsável autorizar por link de uso único; se negar, o cadastro é apagado; sem resposta em 30 dias, é apagado automaticamente.</td></tr>
+  <tr><td>Proteção em repouso</td><td>E-mail do responsável cifrado (Fernet) com chave no Key Vault; senha só como hash.</td></tr>
+  <tr><td>Direitos do titular</td><td>Baixar os próprios dados e apagar a conta, direto no painel.</td></tr>
+  <tr><td>Transparência</td><td>Aviso de Privacidade em linguagem simples; versão e data do aceite registradas.</td></tr>
+  <tr><td>Logs e telemetria</td><td>Sem apelido ou e-mail nas mensagens; auditoria registra a ação, nunca o conteúdo.</td></tr>
+</table>
+<p>Também: CSP restrita, HSTS, cookies <code>Secure</code>/<code>HttpOnly</code>/<code>SameSite</code>, CSRF em todos os formulários e limite de requisições no login, cadastro e tutor. Detalhes e riscos aceitos em <code>docs/seguranca-lgpd.md</code>.</p>
+<figure data-print="12-consentimento.png">Tela de autorização do responsável.</figure>
+
+<h2>5. Monitoramento</h2>
+<p class="pontos">Critério: Monitoramento — 3,0 pontos</p>
+<p>A aplicação envia requisições, falhas, dependências e logs ao Application Insights (workspace do Log Analytics, retenção de 30 dias). Os logs do App Service também vão para o mesmo workspace. Três alertas avisam a equipe por e-mail:</p>
+<table>
+  <tr><th>Alerta</th><th>Condição</th><th>Severidade</th></tr>
+  <tr><td>alerta-health-check</td><td><code>/health</code> falhando por 5 minutos</td><td>0 – crítico</td></tr>
+  <tr><td>alerta-erros-5xx</td><td>Mais de 5 respostas 5xx em 5 minutos</td><td>1 – erro</td></tr>
+  <tr><td>alerta-lentidao</td><td>Tempo médio de resposta acima de 3 s em 5 minutos</td><td>2 – aviso</td></tr>
+</table>
+<figure data-print="13-app-insights.png">Application Insights com o tráfego do MVP.</figure>
+<div class="dupla">
+  <figure data-print="14-regras-de-alerta.png">Regras de alerta.</figure>
+  <figure data-print="15-alerta-disparado.png">Alerta disparado no teste.</figure>
+</div>
+<figure data-print="16-email-alerta.png">E-mail do Azure Monitor recebido pela equipe.</figure>
+
+<h2>6. Estimativa de custo</h2>
+<p class="pontos">Critério: Custo e documentação — 1,5 ponto</p>
+<p class="nota"><span class="falta">CONFIRMAR NA CALCULADORA</span> Valores aproximados de lista, em dólar; substituir pelos números da Calculadora de Preços da Azure para Brazil South.</p>
+<table>
+  <tr><th>Recurso</th><th>Configuração</th><th>Custo mensal aproximado</th></tr>
+  <tr><td>App Service Plan Linux</td><td>B1, 1 instância, 730 h</td><td>US$ 13 a 19</td></tr>
+  <tr><td>Key Vault</td><td>Standard, poucas centenas de leituras</td><td>menos de US$ 0,10</td></tr>
+  <tr><td>Log Analytics + Application Insights</td><td>Menos de 1 GB/mês, dentro da franquia</td><td>US$ 0</td></tr>
+  <tr><td>Alertas de métrica</td><td>3 regras</td><td>até US$ 0,30</td></tr>
+  <tr><td>Tráfego de saída, e-mails de alerta, GitHub Actions</td><td>Dentro das franquias; repositório público</td><td>US$ 0</td></tr>
+  <tr><th colspan="2">Total do MVP</th><th>≈ US$ 14 a 20 por mês</th></tr>
+</table>
+<p>Controle de custo: teto diário de ingestão de logs, orçamento mensal no Resource Group, tags em todos os recursos e um script que remove tudo após a correção. Com o plano F1 o custo cai a zero, sem Always On.</p>
+<div class="dupla">
+  <figure data-print="17-calculadora.png">Calculadora de Preços da Azure.</figure>
+  <figure data-print="18-orcamento.png">Orçamento no Cost Management.</figure>
+</div>
+
+<h2 class="sem-quebra">7. Links</h2>
+<div class="links">
+  <p><strong>URL do MVP:</strong> {{URL_MVP}}</p>
+  <p><strong>Repositório (workflow, scripts e documentação):</strong> {{URL_REPO}}</p>
+</div>
+</body>
+</html>

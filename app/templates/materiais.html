@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block titulo %}Materiais — Apoio Escolar Periférico{% endblock %}
+{% block conteudo %}
+<h1>Materiais de estudo</h1>
+<p>Recursos gratuitos e abertos, escolhidos para estudar pelo celular.</p>
+<form method="get" class="filtro">
+  <label>Matéria
+    <select name="disciplina">
+      <option value="">Todas</option>
+      {% for d in DISCIPLINAS %}<option {% if d == disciplina %}selected{% endif %}>{{ d }}</option>{% endfor %}
+    </select>
+  </label>
+  <button class="botao">Filtrar</button>
+</form>
+<div class="grade">
+  {% for m in materiais %}
+  <article class="cartao">
+    <p class="etiqueta">{{ m.disciplina }} · {{ m.serie }}</p>
+    <h3>{{ m.titulo }}</h3>
+    <p>{{ m.descricao }}</p>
+    <a class="botao secundario" href="{{ m.url }}" rel="noopener noreferrer" target="_blank">Abrir material <span class="so-leitor">(abre em nova aba)</span></a>
+  </article>
+  {% else %}<p>Nenhum material para essa matéria ainda.</p>{% endfor %}
+</div>
+{% endblock %}

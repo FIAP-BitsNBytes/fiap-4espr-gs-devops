@@ -1,0 +1,21 @@
+<section class="cartao">
+  <h2>Meus dados</h2>
+  <dl class="dados">
+    <dt>Apelido</dt><dd>{{ g.usuario.apelido }}</dd>
+    {% if g.usuario.serie %}<dt>Série</dt><dd>{{ g.usuario.serie }}</dd>{% endif %}
+    <dt>Bairro</dt><dd>{{ g.usuario.bairro }}</dd>
+    {% if contato %}<dt>E-mail de contato</dt><dd>{{ contato }}</dd>{% endif %}
+    {% if g.usuario.consentimento_em %}<dt>Consentimento</dt><dd>versão {{ g.usuario.consentimento_versao }}, em {{ g.usuario.consentimento_em.strftime('%d/%m/%Y') }}</dd>{% endif %}
+  </dl>
+  <p><a class="botao secundario" href="{{ url_for('web.exportar') }}">Baixar meus dados</a></p>
+  <details>
+    <summary>Apagar minha conta</summary>
+    <form method="post" action="{{ url_for('web.excluir') }}" class="pilha">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <p>Isso apaga sua conta, suas inscrições e seus dados. Não dá para desfazer.</p>
+      <label for="senha-excluir">Digite sua senha para confirmar</label>
+      <input id="senha-excluir" name="senha" type="password" required autocomplete="current-password">
+      <button class="botao perigo">Apagar tudo</button>
+    </form>
+  </details>
+</section>

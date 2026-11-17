@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block titulo %}Monitorias — Apoio Escolar Periférico{% endblock %}
+{% block conteudo %}
+<h1>Monitorias</h1>
+<form method="get" class="filtro">
+  <label>Matéria
+    <select name="disciplina">
+      <option value="">Todas</option>
+      {% for d in DISCIPLINAS %}<option {% if d == disciplina %}selected{% endif %}>{{ d }}</option>{% endfor %}
+    </select>
+  </label>
+  <label>Bairro <input name="bairro" value="{{ bairro }}" maxlength="60" placeholder="Ex.: Grajaú"></label>
+  <button class="botao">Filtrar</button>
+</form>
+<div class="grade">
+  {% for v in vagas %}{% with acoes=true %}{% include "_vaga.html" %}{% endwith %}{% else %}<p>Nenhuma monitoria encontrada com esse filtro.</p>{% endfor %}
+</div>
+{% endblock %}

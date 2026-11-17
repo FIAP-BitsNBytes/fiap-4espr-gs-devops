@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block conteudo %}
+<h1>Cadastro recebido, {{ usuario.apelido }}!</h1>
+{% if usuario.status == 'pendente_consentimento' %}
+  <p>Como você tem menos de 18 anos, um responsável precisa autorizar. Enquanto isso você já pode entrar e ver os materiais, mas a inscrição em monitorias fica liberada só depois da autorização.</p>
+  <div class="cartao destaque">
+    <h2>Link de autorização do responsável</h2>
+    <p>Em produção este link é enviado <strong>somente para o e-mail do responsável</strong>. Neste MVP o envio de e-mail ainda não está ligado, então o link aparece aqui uma única vez, para demonstração:</p>
+    <p><a href="{{ link }}">{{ link }}</a></p>
+  </div>
+{% elif usuario.status == 'pendente_aprovacao' %}
+  <p>Obrigado por se voluntariar! A coordenação vai conferir seu cadastro. Depois da aprovação você poderá publicar monitorias.</p>
+{% else %}
+  <p>Sua conta já está ativa.</p>
+{% endif %}
+<p><a class="botao" href="{{ url_for('web.entrar') }}">Entrar</a></p>
+{% endblock %}

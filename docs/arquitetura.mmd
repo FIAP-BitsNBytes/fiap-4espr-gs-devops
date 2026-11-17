@@ -1,0 +1,35 @@
+flowchart LR
+  subgraph Usuarios[Quem usa]
+    A[Estudante<br/>celular de entrada]
+    R[Responsável]
+    V[Voluntário]
+    C[Coordenação]
+  end
+  subgraph GH[GitHub]
+    REPO[Repositório público]
+    ACT[GitHub Actions<br/>lint · testes · bandit · pip-audit<br/>gitleaks · deploy · smoke test]
+  end
+  subgraph AZ[Azure · Resource Group rg-apoio-escolar-gs · Brazil South]
+    APP[App Service Linux<br/>Flask + gunicorn<br/>HTTPS only · TLS 1.2 · Health Check]
+    DB[(SQLite em /home/data<br/>contato cifrado com Fernet)]
+    KV[Key Vault<br/>segredos · RBAC]
+    AI[Application Insights<br/>+ Log Analytics]
+    AL[Alertas + Action Group<br/>e-mail da equipe]
+  end
+  subgraph GS[Outros componentes da GS]
+    GEN[Tutor IA · GenAI]
+    CVV[Leitura de comprovante · Visão]
+    RPA[Robô UiPath · RPA]
+    DADOS[Pipeline de dados · Big Data]
+  end
+  A & R & V & C -->|HTTPS| APP
+  REPO --> ACT
+  ACT -->|OIDC, sem senha| APP
+  APP --> DB
+  APP -->|Managed Identity| KV
+  APP -->|telemetria sem dado pessoal| AI
+  AI --> AL
+  APP -->|só a pergunta| GEN
+  CVV -->|POST /api/v1/endereco| APP
+  RPA -->|X-API-Key| APP
+  DADOS -.->|GET /api/v1/indicadores| APP

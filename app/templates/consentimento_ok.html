@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block conteudo %}
+{% if autorizado %}
+<h1>Cadastro autorizado</h1>
+<p>Obrigado. O estudante já pode se inscrever nas monitorias. A autorização ficou registrada com data e versão do Aviso de Privacidade.</p>
+{% else %}
+<h1>Cadastro apagado</h1>
+<p>Você não autorizou. O cadastro do estudante e o seu e-mail foram apagados agora.</p>
+{% endif %}
+{% endblock %}

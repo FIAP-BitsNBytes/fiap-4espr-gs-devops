@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block titulo %}Autorização do responsável{% endblock %}
+{% block conteudo %}
+<h1>Autorização do responsável</h1>
+<p>O estudante com apelido <strong>{{ aluno.apelido }}</strong> ({{ aluno.serie }}, bairro {{ aluno.bairro }}) pediu para usar o Apoio Escolar Periférico e informou seu e-mail como responsável.</p>
+<div class="cartao">
+  <h2>O que guardamos sobre o estudante</h2>
+  <ul>
+    <li>Apelido, série, bairro e faixa de idade.</li>
+    <li>O seu e-mail, cifrado, apenas para este pedido de autorização.</li>
+    <li>As monitorias em que ele se inscrever.</li>
+  </ul>
+  <h2>O que não guardamos</h2>
+  <p>Nome completo, CPF, endereço, telefone, data de nascimento, fotos ou documentos.</p>
+  <p>Os dados servem só para organizar o reforço escolar. Não são vendidos nem usados para publicidade. O estudante ou você podem apagar tudo a qualquer momento. Detalhes no <a href="{{ url_for('web.privacidade') }}">Aviso de Privacidade</a>.</p>
+</div>
+<form method="post" class="acoes">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+  <button class="botao" name="decisao" value="autorizo">Autorizo o cadastro</button>
+  <button class="botao perigo" name="decisao" value="nao">Não autorizo (apagar o cadastro)</button>
+</form>
+{% endblock %}

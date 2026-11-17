@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block titulo %}Apoio Escolar Periférico{% endblock %}</title>
+  <meta name="description" content="Monitoria voluntária, materiais de estudo e trilhas de tecnologia para estudantes de escolas públicas.">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <a class="pular" href="#conteudo">Pular para o conteúdo</a>
+  <header class="topo">
+    <div class="faixa">
+      <a class="marca" href="{{ url_for('web.inicio') }}"><span aria-hidden="true">✎</span> Apoio Escolar Periférico</a>
+      <nav aria-label="Principal">
+        <a href="{{ url_for('web.vagas') }}">Monitorias</a>
+        <a href="{{ url_for('web.materiais') }}">Materiais</a>
+        <a href="{{ url_for('web.tutor') }}">Tutor</a>
+        {% if g.usuario %}
+          <a href="{{ url_for('web.painel') }}">Meu painel</a>
+          <form method="post" action="{{ url_for('web.sair') }}" class="inline">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <button class="link">Sair</button>
+          </form>
+        {% else %}
+          <a href="{{ url_for('web.entrar') }}">Entrar</a>
+          <a class="botao pequeno" href="{{ url_for('web.cadastro') }}">Cadastrar</a>
+        {% endif %}
+      </nav>
+    </div>
+  </header>
+  <main id="conteudo" class="faixa">
+    {% with msgs = get_flashed_messages(with_categories=true) %}
+      {% for cat, msg in msgs %}<p class="aviso {{ cat }}" role="status">{{ msg }}</p>{% endfor %}
+    {% endwith %}
+    {% block conteudo %}{% endblock %}
+  </main>
+  <footer class="rodape">
+    <div class="faixa">
+      <p>Projeto acadêmico — FIAP Global Solution 2026.2 · CitizenTech · ODS 4 e ODS 10.</p>
+      <p><a href="{{ url_for('web.privacidade') }}">Aviso de Privacidade</a> · Guardamos o mínimo de dados e você pode apagar tudo quando quiser.</p>
+    </div>
+  </footer>
+</body>
+</html>

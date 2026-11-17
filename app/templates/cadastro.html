@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block titulo %}Cadastro — Apoio Escolar Periférico{% endblock %}
+{% block conteudo %}
+<h1>Cadastro</h1>
+<p class="abas">
+  <a href="{{ url_for('web.cadastro', tipo='aluno') }}" {% if tipo == 'aluno' %}aria-current="page"{% endif %}>Sou estudante</a>
+  <a href="{{ url_for('web.cadastro', tipo='voluntario') }}" {% if tipo == 'voluntario' %}aria-current="page"{% endif %}>Quero ser voluntário</a>
+</p>
+<form method="post" class="pilha" autocomplete="off">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+  <input type="hidden" name="tipo" value="{{ tipo }}">
+
+  <label for="apelido">Apelido <small>(não use seu nome completo)</small></label>
+  <input id="apelido" name="apelido" required minlength="3" maxlength="30" value="{{ form.apelido or '' }}">
+
+  <label for="senha">Senha <small>(8 caracteres ou mais)</small></label>
+  <input id="senha" name="senha" type="password" required minlength="8" autocomplete="new-password">
+
+  <label for="bairro">Bairro <small>(só o bairro, sem rua nem número)</small></label>
+  <input id="bairro" name="bairro" required maxlength="60" value="{{ form.bairro or '' }}">
+
+  {% if tipo == 'aluno' %}
+    <label for="serie">Série</label>
+    <select id="serie" name="serie" required>
+      <option value="">Escolha…</option>
+      {% for s in SERIES %}<option {% if s == form.serie %}selected{% endif %}>{{ s }}</option>{% endfor %}
+    </select>
+
+    <fieldset>
+      <legend>Sua idade <small>(guardamos só a faixa, não a data de nascimento)</small></legend>
+      <label><input type="radio" name="faixa_etaria" value="menor_12" required {% if form.faixa_etaria == 'menor_12' %}checked{% endif %}> Menos de 12 anos</label>
+      <label><input type="radio" name="faixa_etaria" value="12_17" {% if form.faixa_etaria == '12_17' %}checked{% endif %}> De 12 a 17 anos</label>
+      <label><input type="radio" name="faixa_etaria" value="18_mais" {% if form.faixa_etaria == '18_mais' %}checked{% endif %}> 18 anos ou mais</label>
+    </fieldset>
+
+    <label for="contato">E-mail do responsável <small>(obrigatório para menores de 18 anos — é ele quem autoriza o cadastro)</small></label>
+    <input id="contato" name="contato" type="email" maxlength="320" value="{{ form.contato or '' }}">
+  {% else %}
+    <label for="contato">Seu e-mail <small>(só a coordenação vê; fica cifrado)</small></label>
+    <input id="contato" name="contato" type="email" required maxlength="320" value="{{ form.contato or '' }}">
+    <label class="marcar"><input type="checkbox" name="boletim" value="sim"> Quero receber o boletim informativo por e-mail <small>(opcional)</small></label>
+  {% endif %}
+
+  <label class="marcar"><input type="checkbox" name="aceite" value="sim" required> Li e aceito o <a href="{{ url_for('web.privacidade') }}" target="_blank" rel="noopener">Aviso de Privacidade</a> (versão {{ VERSAO_TERMO }}).</label>
+  <button class="botao">Criar cadastro</button>
+</form>
+{% endblock %}

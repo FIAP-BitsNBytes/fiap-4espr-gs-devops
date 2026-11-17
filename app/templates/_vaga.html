@@ -1,0 +1,20 @@
+<article class="cartao">
+  <p class="etiqueta">{{ v.disciplina }} · {{ v.modalidade }}</p>
+  <h3>{{ v.descricao }}</h3>
+  <p>📍 {{ v.bairro }} &nbsp; 🕒 {{ v.dia_horario }}</p>
+  <p><strong>{{ v.vagas_livres }}</strong> de {{ v.vagas_total }} vagas livres</p>
+  {% if acoes %}
+    {% if g.usuario and g.usuario.papel == 'aluno' %}
+      {% if v.id in minhas %}
+        <p class="ok-texto">Você está inscrito.</p>
+      {% elif v.vagas_livres > 0 %}
+        <form method="post" action="{{ url_for('web.inscrever', vaga_id=v.id) }}">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <button class="botao">Quero participar</button>
+        </form>
+      {% endif %}
+    {% elif not g.usuario %}
+      <a class="botao secundario" href="{{ url_for('web.cadastro') }}">Cadastre-se para participar</a>
+    {% endif %}
+  {% endif %}
+</article>

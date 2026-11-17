@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block titulo %}Tutor virtual — Apoio Escolar Periférico{% endblock %}
+{% block conteudo %}
+<h1>Tutor virtual</h1>
+<p>Tire uma dúvida de estudo. <strong>Não escreva seu nome, endereço ou telefone:</strong> a pergunta é enviada ao tutor sem dizer quem você é.</p>
+<form id="tutor-form" class="pilha">
+  <label for="pergunta">Sua dúvida</label>
+  <textarea id="pergunta" maxlength="500" rows="3" required placeholder="Ex.: Como somar frações com denominadores diferentes?"></textarea>
+  <button class="botao">Perguntar</button>
+</form>
+<div id="tutor-resposta" class="cartao" role="status" aria-live="polite" hidden></div>
+<p class="nota">O tutor é uma inteligência artificial e pode errar. Em caso de dúvida, confirme com seu professor ou monitor.</p>
+<script src="{{ url_for('static', filename='app.js') }}" defer></script>
+{% endblock %}

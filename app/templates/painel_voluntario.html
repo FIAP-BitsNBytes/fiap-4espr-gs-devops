@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block titulo %}Painel do voluntário{% endblock %}
+{% block conteudo %}
+<h1>Olá, {{ g.usuario.apelido }}</h1>
+{% if not g.usuario.ativo %}<p class="aviso aviso-fixo">Seu cadastro espera aprovação da coordenação.</p>{% else %}
+<section class="cartao">
+  <h2>Publicar monitoria</h2>
+  <form method="post" action="{{ url_for('web.nova_vaga') }}" class="pilha">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <label for="disciplina">Matéria</label>
+    <select id="disciplina" name="disciplina" required>{% for d in DISCIPLINAS %}<option>{{ d }}</option>{% endfor %}</select>
+    <label for="descricao">Descrição</label>
+    <input id="descricao" name="descricao" required minlength="5" maxlength="280">
+    <label for="bairro-vaga">Bairro</label>
+    <input id="bairro-vaga" name="bairro" required maxlength="60" value="{{ g.usuario.bairro or '' }}">
+    <label for="modalidade">Modalidade</label>
+    <select id="modalidade" name="modalidade"><option>presencial</option><option>online</option></select>
+    <label for="dia_horario">Dia e horário</label>
+    <input id="dia_horario" name="dia_horario" required maxlength="60" placeholder="Ex.: Sábados, 9h às 11h">
+    <label for="vagas_total">Número de vagas</label>
+    <input id="vagas_total" name="vagas_total" type="number" min="1" max="40" value="5" required>
+    <button class="botao">Publicar</button>
+  </form>
+</section>
+{% endif %}
+<h2>Minhas monitorias</h2>
+<div class="grade">
+  {% for v in g.usuario.vagas %}
+  <article class="cartao">
+    <p class="etiqueta">{{ v.disciplina }} · {{ 'aberta' if v.ativa else 'encerrada' }}</p>
+    <h3>{{ v.descricao }}</h3>
+    <p>{{ v.inscricoes|length }} de {{ v.vagas_total }} vagas preenchidas</p>
+    {% if v.inscricoes %}<p>Inscritos (só apelido e série): {% for i in v.inscricoes %}{{ i.aluno.apelido }} ({{ i.aluno.serie }}){{ ", " if not loop.last }}{% endfor %}</p>{% endif %}
+    {% if v.ativa %}
+    <form method="post" action="{{ url_for('web.encerrar_vaga', vaga_id=v.id) }}">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <button class="botao secundario">Encerrar</button>
+    </form>
+    {% endif %}
+  </article>
+  {% else %}<p>Nenhuma monitoria publicada.</p>{% endfor %}
+</div>
+{% include "_meus_dados.html" %}
+{% endblock %}

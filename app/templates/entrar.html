@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block titulo %}Entrar — Apoio Escolar Periférico{% endblock %}
+{% block conteudo %}
+<h1>Entrar</h1>
+<form method="post" class="pilha">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+  <label for="apelido">Apelido</label>
+  <input id="apelido" name="apelido" required autocomplete="username">
+  <label for="senha">Senha</label>
+  <input id="senha" name="senha" type="password" required autocomplete="current-password">
+  <button class="botao">Entrar</button>
+</form>
+<p>Ainda não tem conta? <a href="{{ url_for('web.cadastro') }}">Cadastre-se</a>.</p>
+{% endblock %}

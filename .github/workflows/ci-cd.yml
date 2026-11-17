@@ -1,0 +1,133 @@
+name: CI/CD
+
+# A cada commit: qualidade -> segurança -> pacote -> deploy no Azure App Service -> smoke test.
+# Nenhum segredo fica no repositório. O login na Azure usa OIDC (sem senha guardada);
+# se a conta não permitir criar App Registration, há o plano B com publish profile.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+env:
+  PYTHON_VERSION: "3.12"
+
+jobs:
+  qualidade:
+    name: Lint, testes e segurança do código
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: pip
+      - name: Instalar dependências
+        run: pip install -r requirements-dev.txt
+      - name: Lint (ruff, inclui regras de segurança)
+        run: ruff check .
+      - name: Testes com cobertura mínima de 80%
+        run: pytest
+      - name: Análise estática de segurança (bandit)
+        run: bandit -q -r app -c pyproject.toml
+      - name: Vulnerabilidades em dependências (pip-audit)
+        run: pip-audit -r requirements.txt
+
+  segredos:
+    name: Varredura de segredos no histórico (gitleaks)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: gitleaks
+        run: |
+          docker run --rm -v "$PWD:/repo" \
+            -e GIT_CONFIG_COUNT=1 -e GIT_CONFIG_KEY_0=safe.directory -e GIT_CONFIG_VALUE_0=/repo \
+            ghcr.io/gitleaks/gitleaks:latest git /repo --redact --no-banner
+
+  pacote:
+    name: Montar pacote de deploy
+    needs: [qualidade, segredos]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Gravar versão e compactar só o necessário
+        run: |
+          echo "${GITHUB_SHA::7}" > VERSAO
+          zip -r release.zip app wsgi.py requirements.txt VERSAO
+      - uses: actions/upload-artifact@v4
+        with:
+          name: release
+          path: release.zip
+          retention-days: 7
+
+  deploy:
+    name: Deploy no Azure App Service
+    needs: pacote
+    # Só publica a partir da main e depois que a variável do app existir.
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request' && vars.AZURE_WEBAPP_NAME != ''
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write # necessário para o login OIDC
+    environment:
+      name: production
+      url: https://${{ vars.AZURE_WEBAPP_NAME }}.azurewebsites.net
+    concurrency:
+      group: deploy-production
+      cancel-in-progress: false
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: release
+
+      # Caminho preferido: OIDC (federated credential), sem segredo de longa duração.
+      - name: Login na Azure (OIDC)
+        if: vars.AZURE_CLIENT_ID != ''
+        uses: azure/login@v2
+        with:
+          client-id: ${{ vars.AZURE_CLIENT_ID }}
+          tenant-id: ${{ vars.AZURE_TENANT_ID }}
+          subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+      - name: Deploy (OIDC)
+        if: vars.AZURE_CLIENT_ID != ''
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: ${{ vars.AZURE_WEBAPP_NAME }}
+          package: release.zip
+
+      # Plano B: publish profile guardado como secret do GitHub.
+      - name: Deploy (publish profile)
+        if: vars.AZURE_CLIENT_ID == ''
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: ${{ vars.AZURE_WEBAPP_NAME }}
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          package: release.zip
+
+      - name: Smoke test em produção (HTTPS + /health + versão publicada)
+        env:
+          URL: https://${{ vars.AZURE_WEBAPP_NAME }}.azurewebsites.net
+        run: |
+          esperado="${GITHUB_SHA::7}"
+          for tentativa in $(seq 1 30); do
+            corpo=$(curl -fsS --max-time 20 "$URL/health" || true)
+            echo "tentativa $tentativa: $corpo"
+            if echo "$corpo" | grep -q '"status":"ok"' && echo "$corpo" | grep -q "\"versao\":\"$esperado\""; then
+              echo "Versão $esperado no ar e saudável." >> "$GITHUB_STEP_SUMMARY"
+              exit 0
+            fi
+            sleep 10
+          done
+          echo "::error::A versão $esperado não respondeu saudável em 5 minutos."
+          exit 1

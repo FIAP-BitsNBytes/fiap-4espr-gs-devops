@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block titulo %}Meu painel{% endblock %}
+{% block conteudo %}
+<h1>Olá, {{ g.usuario.apelido }}</h1>
+{% if not g.usuario.ativo %}<p class="aviso aviso-fixo">Sua conta espera a autorização do responsável. Você já pode ver os materiais.</p>{% endif %}
+<h2>Minhas monitorias</h2>
+<div class="grade">
+  {% for i in g.usuario.inscricoes %}
+  <article class="cartao">
+    <p class="etiqueta">{{ i.vaga.disciplina }} · {{ i.vaga.modalidade }}</p>
+    <h3>{{ i.vaga.descricao }}</h3>
+    <p>📍 {{ i.vaga.bairro }} &nbsp; 🕒 {{ i.vaga.dia_horario }}</p>
+    <form method="post" action="{{ url_for('web.cancelar', vaga_id=i.vaga.id) }}">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <button class="botao secundario">Cancelar inscrição</button>
+    </form>
+  </article>
+  {% else %}<p>Você ainda não se inscreveu. <a href="{{ url_for('web.vagas') }}">Ver monitorias</a>.</p>{% endfor %}
+</div>
+{% include "_meus_dados.html" %}
+{% endblock %}

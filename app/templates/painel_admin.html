@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block titulo %}Coordenação{% endblock %}
+{% block conteudo %}
+<h1>Coordenação</h1>
+<h2>Voluntários aguardando aprovação</h2>
+{% for p in pendentes %}
+<article class="cartao">
+  <h3>{{ p.apelido }}</h3>
+  <p>Bairro: {{ p.bairro or '—' }} · cadastro em {{ p.criado_em.strftime('%d/%m/%Y') }}</p>
+  <form method="post" class="acoes">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <button class="botao" formaction="{{ url_for('web.decidir_voluntario', uid=p.id, decisao='aprovar') }}">Aprovar</button>
+    <button class="botao perigo" formaction="{{ url_for('web.decidir_voluntario', uid=p.id, decisao='recusar') }}">Recusar e apagar</button>
+  </form>
+</article>
+{% else %}<p>Nenhum cadastro pendente.</p>{% endfor %}
+
+<h2>Alunos ativos por bairro</h2>
+<p class="nota">Só números agregados. Bairros com menos de {{ k }} alunos aparecem como “menos de {{ k }}” para ninguém ser identificado.</p>
+<table>
+  <thead><tr><th scope="col">Bairro</th><th scope="col">Alunos</th></tr></thead>
+  <tbody>
+  {% for b, n in indicadores %}<tr><td>{{ b }}</td><td>{{ n if n else 'menos de ' ~ k }}</td></tr>
+  {% else %}<tr><td colspan="2">Sem alunos ativos ainda.</td></tr>{% endfor %}
+  </tbody>
+</table>
+
+<h2>Trilha de auditoria (últimos 20 eventos)</h2>
+<table>
+  <thead><tr><th scope="col">Quando (UTC)</th><th scope="col">Quem</th><th scope="col">Ação</th><th scope="col">Alvo</th></tr></thead>
+  <tbody>
+  {% for t in trilha %}<tr><td>{{ t.quando.strftime('%d/%m %H:%M') }}</td><td>{{ t.ator }}</td><td>{{ t.acao }}</td><td>{{ t.alvo }}</td></tr>
+  {% else %}<tr><td colspan="4">Sem eventos.</td></tr>{% endfor %}
+  </tbody>
+</table>
+{% endblock %}

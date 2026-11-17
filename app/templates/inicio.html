@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block conteudo %}
+<section class="heroi">
+  <h1>Reforço escolar gratuito, perto de você.</h1>
+  <p>Encontre monitoria com voluntários, materiais de estudo e trilhas de tecnologia. Feito para estudantes de escolas públicas.</p>
+  <p>
+    <a class="botao" href="{{ url_for('web.vagas') }}">Ver monitorias</a>
+    <a class="botao secundario" href="{{ url_for('web.cadastro', tipo='voluntario') }}">Quero ser voluntário</a>
+  </p>
+</section>
+<section class="numeros" aria-label="Números da plataforma">
+  <div><strong>{{ numeros.vagas }}</strong><span>monitorias abertas</span></div>
+  <div><strong>{{ numeros.voluntarios }}</strong><span>voluntários ativos</span></div>
+  <div><strong>{{ numeros.materiais }}</strong><span>materiais gratuitos</span></div>
+</section>
+<h2>Monitorias recentes</h2>
+<div class="grade">
+  {% for v in vagas %}{% with acoes=false %}{% include "_vaga.html" %}{% endwith %}{% else %}<p>Nenhuma monitoria aberta no momento.</p>{% endfor %}
+</div>
+<h2>Como funciona</h2>
+<ol class="passos">
+  <li><strong>Cadastre-se com um apelido.</strong> Não pedimos nome completo, CPF nem endereço.</li>
+  <li><strong>Se você tem menos de 18 anos,</strong> um responsável autoriza o cadastro.</li>
+  <li><strong>Escolha uma monitoria</strong> no seu bairro ou online e participe.</li>
+</ol>
+{% endblock %}

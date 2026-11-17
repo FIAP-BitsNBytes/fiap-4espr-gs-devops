@@ -1,0 +1,16 @@
+__pycache__/
+*.pyc
+.venv/
+venv/
+instance/
+.env
+.env.*
+!.env.example
+.coverage
+htmlcov/
+.pytest_cache/
+.ruff_cache/
+*.db
+*.publishsettings
+infra/.saida/
+VERSAO
