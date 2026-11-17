@@ -75,7 +75,7 @@ git push origin main        # o GitHub Actions publica e testa
 
 ```
 app/                 aplicação Flask (páginas, API, modelo, segurança)
-tests/               25 testes (pytest), cobertura acima de 90%
+tests/               26 testes (pytest), cobertura acima de 90%
 infra/               scripts Azure CLI: provisionar, configurar deploy, destruir
 .github/workflows/   CI/CD e CodeQL
 docs/                arquitetura, segurança e LGPD, operação, custos, guia Azure, PDF de entrega

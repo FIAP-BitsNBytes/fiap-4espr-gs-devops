@@ -59,7 +59,7 @@ Limitação conhecida do MVP: o envio do e-mail ao responsável ainda não está
 | Camada | Controle |
 |---|---|
 | Transporte | HTTPS only, TLS mínimo 1.2, HSTS, FTP desligado, autenticação básica de deploy desligada |
-| Navegador | Content-Security-Policy restrita a `'self'`, `X-Frame-Options: DENY`, `nosniff`, `Referrer-Policy: no-referrer` |
+| Navegador | Content-Security-Policy restrita a `'self'`, `X-Frame-Options: DENY`, `nosniff`, `Referrer-Policy: same-origin` |
 | Sessão | Cookie `Secure`, `HttpOnly`, `SameSite=Lax`, expira em 2 h; CSRF em todos os formulários |
 | Abuso | Limite de requisições por IP (login, cadastro, tutor) |
 | Injeção | ORM com parâmetros; templates com escape automático |

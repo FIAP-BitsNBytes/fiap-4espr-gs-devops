@@ -59,6 +59,14 @@ def create_app(overrides: dict | None = None) -> Flask:
             return jsonify(erro=titulo), codigo
         return render_template("erro.html", titulo=titulo, mensagem=mensagem), codigo
 
+    @app.errorhandler(400)
+    def requisicao_invalida(_e):
+        return _erro(
+            400, "Não foi possível enviar",
+            "A página ficou aberta por muito tempo ou o envio veio de outro lugar. "
+            "Volte, recarregue a página e tente de novo.",
+        )
+
     @app.errorhandler(401)
     def nao_autenticado(_e):
         return _erro(401, "Não autorizado", "Credencial ausente ou inválida.")

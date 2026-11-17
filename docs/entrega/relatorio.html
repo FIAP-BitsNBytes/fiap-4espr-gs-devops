@@ -93,7 +93,7 @@
 <p>Cada commit na <code>main</code> dispara o workflow do GitHub Actions (<code>.github/workflows/ci-cd.yml</code>). O deploy só acontece se todas as verificações passarem, e só é considerado concluído quando o site responde saudável com a versão do commit.</p>
 <table>
   <tr><th style="width:22%">Job</th><th>O que faz</th></tr>
-  <tr><td>qualidade</td><td>ruff (lint com regras de segurança), pytest com 25 testes e cobertura mínima de 80%, bandit, pip-audit.</td></tr>
+  <tr><td>qualidade</td><td>ruff (lint com regras de segurança), pytest com 26 testes e cobertura mínima de 80%, bandit, pip-audit.</td></tr>
   <tr><td>segredos</td><td>gitleaks em todo o histórico do repositório.</td></tr>
   <tr><td>pacote</td><td>Grava o hash do commit em <code>VERSAO</code> e gera o pacote só com o necessário.</td></tr>
   <tr><td>deploy</td><td>Login OIDC na Azure, publicação no App Service e smoke test em <code>/health</code> conferindo a versão.</td></tr>
@@ -141,7 +141,7 @@
 
 <h2>5. Monitoramento</h2>
 <p class="pontos">Critério: Monitoramento — 3,0 pontos</p>
-<p>A aplicação envia requisições, falhas, dependências e logs ao Application Insights (workspace do Log Analytics, retenção de 30 dias). Os logs do App Service também vão para o mesmo workspace. Três alertas avisam a equipe por e-mail:</p>
+<p>A aplicação envia requisições, falhas, dependências e logs ao Application Insights (workspace do Log Analytics, retenção de 30 dias). Os logs do App Service também vão para o mesmo workspace. Três alertas avisam a equipe por e-mail (endereço verificado no grupo de ação). No teste, o Web App foi parado e religado: a lentidão das primeiras respostas disparou o <code>alerta-lentidao</code>, o e-mail chegou e o alerta se resolveu sozinho quando o tempo de resposta normalizou.</p>
 <table>
   <tr><th>Alerta</th><th>Condição</th><th>Severidade</th></tr>
   <tr><td>alerta-health-check</td><td><code>/health</code> falhando por 5 minutos</td><td>0 – crítico</td></tr>
@@ -151,9 +151,9 @@
 <figure data-print="13-app-insights.png">Application Insights com o tráfego do MVP.</figure>
 <div class="dupla">
   <figure data-print="14-regras-de-alerta.png">Regras de alerta.</figure>
-  <figure data-print="15-alerta-disparado.png">Alerta disparado no teste.</figure>
+  <figure data-print="15-alerta-disparado.png">Alerta de lentidão acionado no teste.</figure>
 </div>
-<figure data-print="16-email-alerta.png">E-mail do Azure Monitor recebido pela equipe.</figure>
+<figure data-print="16-email-alerta.png">E-mails do Azure Monitor recebidos pela equipe: alerta disparado (tempo médio de 39 s contra o limite de 3 s) e, sete minutos depois, resolvido.</figure>
 
 <h2>6. Estimativa de custo</h2>
 <p class="pontos">Critério: Custo e documentação — 1,5 ponto</p>

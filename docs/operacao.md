@@ -21,16 +21,21 @@ Todos usam o Action Group `ag-apoioescolar`, com os e-mails de `EMAIL_ALERTA`.
 
 ## Como provocar um alerta para a evidência
 
-O alerta de health check é o mais simples de demonstrar sem alterar o código:
+Aprendizados do teste real desta entrega:
+
+- O e-mail de cada destinatário do Action Group precisa ser **verificado** (a Azure envia um link que expira em 30 minutos). Sem isso o alerta dispara no portal, mas nenhum e-mail é enviado. Para reenviar: Action Group > Visão geral > Reenviar.
+- **Parar o Web App não dispara alerta**: com o app parado a plataforma deixa de emitir métricas e nenhuma regra é avaliada.
+- O que funcionou: parar o app por alguns minutos e **religar**. As primeiras respostas após a partida a frio são lentas e disparam o `alerta-lentidao`; poucos minutos depois chega o e-mail de resolução.
 
 ```bash
 source infra/.saida/ambiente.env
-az webapp stop -g "$RG" -n "$APP"      # o site sai do ar
-# aguarde de 5 a 10 minutos: chega o e-mail "Fired: Sev0 alerta-health-check"
-az webapp start -g "$RG" -n "$APP"     # depois chega o e-mail "Resolved"
+az webapp stop -g "$RG" -n "$APP"
+sleep 300
+az webapp start -g "$RG" -n "$APP"
+# em cerca de 5 minutos: e-mail "Your Azure Monitor alert was triggered" e, depois, "was resolved"
 ```
 
-Tire print do e-mail e da tela Monitor > Alerts mostrando o disparo.
+Tire print dos e-mails e da tela Alertas do Resource Group mostrando o disparo.
 
 ## Consultas úteis (Application Insights > Logs)
 

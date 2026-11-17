@@ -43,6 +43,26 @@ def test_csrf_ativo_por_padrao(tmp_path, monkeypatch):
     assert app.test_client().post("/entrar", data={"apelido": "x", "senha": "y"}).status_code == 400
 
 
+def test_formulario_funciona_em_https_com_csrf(tmp_path, monkeypatch):
+    """Regressão: em HTTPS o Flask-WTF exige o cabeçalho Referer. Com
+    Referrer-Policy: no-referrer o navegador não o enviava e todo POST dava 400."""
+    monkeypatch.setenv("APP_ENV", "development")
+    app = create_app({"TESTING": True, "RATELIMIT_ENABLED": False,
+                      "SQLALCHEMY_DATABASE_URI": f"sqlite:///{tmp_path}/h.db"})
+    c = app.test_client()
+    base = "https://apoio.example"
+    pagina = c.get("/cadastro", base_url=base)
+    assert pagina.headers["Referrer-Policy"] == "same-origin"
+    token = re.search(r'name="csrf_token" value="([^"]+)"', pagina.text).group(1)
+    dados = {"csrf_token": token, "tipo": "aluno", "apelido": "bia_8", "senha": "segredo123",
+             "bairro": "Grajaú", "serie": "8º ano EF", "faixa_etaria": "18_mais", "aceite": "sim"}
+    com_referer = c.post("/cadastro", data=dados, base_url=base,
+                         headers={"Referer": base + "/cadastro"})
+    assert com_referer.status_code == 200
+    sem_referer = c.post("/cadastro", data={**dados, "apelido": "bia_9"}, base_url=base)
+    assert sem_referer.status_code == 400 and "Não foi possível enviar" in sem_referer.text
+
+
 # ---------- cadastro, minimização e consentimento ----------
 def test_cadastro_adulto_fica_ativo(app, client):
     assert cadastrar(client).status_code == 200

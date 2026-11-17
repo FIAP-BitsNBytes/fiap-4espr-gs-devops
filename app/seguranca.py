@@ -116,7 +116,10 @@ def cabecalhos(resposta):
     resposta.headers.setdefault("Content-Security-Policy", CSP)
     resposta.headers.setdefault("X-Content-Type-Options", "nosniff")
     resposta.headers.setdefault("X-Frame-Options", "DENY")
-    resposta.headers.setdefault("Referrer-Policy", "no-referrer")
+    # same-origin: o Referer só é enviado para o próprio site (nunca para links
+    # externos). "no-referrer" quebraria os formulários: a proteção CSRF do
+    # Flask-WTF exige o Referer em requisições HTTPS.
+    resposta.headers.setdefault("Referrer-Policy", "same-origin")
     resposta.headers.setdefault(
         "Permissions-Policy", "camera=(), microphone=(), geolocation=()"
     )
