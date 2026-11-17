@@ -28,13 +28,28 @@ if [[ "$MODO" == "oidc" ]]; then
   az ad sp show --id "$CLIENT_ID" -o none 2>/dev/null || az ad sp create --id "$CLIENT_ID" -o none
   SP_OBJ="$(az ad sp show --id "$CLIENT_ID" --query id -o tsv)"
 
-  if ! az ad app federated-credential list --id "$CLIENT_ID" --query "[?name=='github-production']" -o tsv | grep -q .; then
-    az ad app federated-credential create --id "$CLIENT_ID" -o none --parameters "{
-      \"name\": \"github-production\",
-      \"issuer\": \"https://token.actions.githubusercontent.com\",
-      \"subject\": \"repo:${REPO}:environment:production\",
-      \"audiences\": [\"api://AzureADTokenExchange\"]
-    }"
+  credencial() {  # nome, subject
+    if ! az ad app federated-credential list --id "$CLIENT_ID" --query "[?name=='$1']" -o tsv | grep -q .; then
+      az ad app federated-credential create --id "$CLIENT_ID" -o none --parameters "{
+        \"name\": \"$1\",
+        \"issuer\": \"https://token.actions.githubusercontent.com\",
+        \"subject\": \"$2\",
+        \"audiences\": [\"api://AzureADTokenExchange\"]
+      }"
+    fi
+  }
+  # Formato clássico do subject.
+  credencial github-production "repo:${REPO}:environment:production"
+  # Formato novo: o GitHub passou a incluir os IDs imutáveis do dono e do repositório
+  # (repo:DONO@ID/REPO@ID:...). Sem esta credencial o login falha com AADSTS700213.
+  META="$(curl -fsS "https://api.github.com/repos/${REPO}" || true)"
+  DONO_ID="$(echo "$META" | jq -r '.owner.id // empty' 2>/dev/null || true)"
+  REPO_ID="$(echo "$META" | jq -r '.id // empty' 2>/dev/null || true)"
+  if [[ -n "$DONO_ID" && -n "$REPO_ID" ]]; then
+    credencial github-production-ids "repo:${REPO%%/*}@${DONO_ID}/${REPO##*/}@${REPO_ID}:environment:production"
+  else
+    echo "aviso: não consegui ler os IDs do repositório (ele é público?). Se o deploy falhar com"
+    echo "       AADSTS700213, crie uma credencial federada com o subject exato mostrado no erro."
   fi
   az role assignment create --assignee-object-id "$SP_OBJ" --assignee-principal-type ServicePrincipal \
     --role "Website Contributor" --scope "$APP_ID" -o none

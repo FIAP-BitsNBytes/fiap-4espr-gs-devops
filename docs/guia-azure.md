@@ -17,7 +17,7 @@ bash infra/provisionar.sh
 ```
 
 Variáveis opcionais: `SKU=F1` (gratuito), `LOCAL=brazilsouth`, `ORCAMENTO_USD=30`.
-Se a assinatura não permitir Brazil South, use `LOCAL=eastus2` e registre a mudança no PDF.
+Se a assinatura não tiver cota em Brazil South (erro *Operation cannot be completed without additional quota*), escolha outra região com `LOCAL=...` e registre a mudança no PDF. Nesta entrega foi usado `LOCAL=westus3`. Se o Resource Group já tiver sido criado vazio em outra região, apague-o antes de rodar de novo.
 Confirme o convite que o Azure Monitor envia para cada e-mail de alerta.
 
 ## Passo 2 — Ligar o GitHub Actions

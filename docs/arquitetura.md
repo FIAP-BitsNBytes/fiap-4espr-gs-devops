@@ -9,7 +9,7 @@ Fonte do diagrama: [arquitetura.mmd](arquitetura.mmd) (Mermaid).
 | Decisão | Por quê | O que abrimos mão |
 |---|---|---|
 | **Azure App Service Linux (PaaS)** | É o serviço visto no semestre; entrega HTTPS, TLS, Health Check e identidade gerenciada sem administrar servidor. | Menos controle que VM ou contêiner; suficiente para o MVP. |
-| **Região Brazil South** | Dados de crianças e adolescentes ficam no Brasil e a latência é menor para o usuário. | Preço um pouco maior que regiões dos EUA. |
+| **Região West US 3 (provisória)** | A região preferida é Brazil South, para manter dados de crianças e adolescentes no Brasil. A assinatura de avaliação tinha cota zero de App Service B1 em Brazil South, East US 2 e Central US; West US 3 foi a primeira que aceitou. | Dados fora do Brasil e latência maior. Aceitável só porque o MVP usa dados de demonstração; a migração para Brazil South é pré-requisito do piloto real (basta rodar o script com `LOCAL=brazilsouth` em uma assinatura com cota). |
 | **HTML renderizado no servidor, sem framework de front-end** | Páginas de poucos kB funcionam em celular de entrada e conexão ruim; sem fontes nem scripts de terceiros. | Menos interatividade. |
 | **SQLite em `/home/data`** | Custo zero e nenhuma credencial de banco para proteger; `/home` é armazenamento persistente do App Service. | Uma instância só (1 worker). O acesso usa SQLAlchemy, então migrar para Azure Database for PostgreSQL é trocar `DATABASE_URL`. |
 | **Key Vault + Managed Identity** | Nenhum segredo no código, no repositório ou no pipeline; a aplicação recebe só permissão de leitura do cofre. | Um recurso a mais para criar. |

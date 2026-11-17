@@ -16,7 +16,7 @@
 | **Arquitetura: componentes** | Web app Flask no Azure App Service (este repositório) · API v1 de integração · tutor IA (GenAI) · leitura de comprovante por foto (Visão) · robô UiPath de cadastro e boletim (RPA) · pipeline de dados educacionais (Big Data) · suporte físico para tablet comunitário (Maker Lab). Diagrama em [docs/arquitetura.md](docs/arquitetura.md). |
 | **Fontes de dados** | Bases educacionais abertas (IDEB e indicadores escolares do INEP), tratadas pelo pipeline da disciplina de Dados. Neste repositório, as monitorias iniciais são **dados simulados** marcados como “[Demonstração]” e os materiais são links para recursos públicos gratuitos. |
 | **Modelos de IA utilizados** | Tutor de estudos com IA generativa (disciplina de GenAI) e OCR de comprovantes (disciplina de Visão). Este app consome os dois por API e nunca envia a identidade do aluno. |
-| **URL do MVP e repositório** | MVP: `https://<AZURE_WEBAPP_NAME>.azurewebsites.net` · Repositório: `https://github.com/<dono>/<repositorio>` *(preencher após o deploy)* |
+| **URL do MVP e repositório** | MVP: <https://app-apoioescolar-6e7462.azurewebsites.net> · Repositório: <https://github.com/FIAP-BitsNBytes/fiap-4espr-gs-devops> |
 | **Indicadores de impacto** | Alunos ativos por bairro · inscrições em monitorias · vagas ofertadas × preenchidas · voluntários ativos · retenção de alunos (expostos de forma agregada em `/api/v1/indicadores`). |
 | **ODS conectados** | ODS 4 (Educação de Qualidade) e ODS 10 (Redução das Desigualdades). |
 

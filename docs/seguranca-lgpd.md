@@ -68,6 +68,7 @@ Limitação conhecida do MVP: o envio do e-mail ao responsável ainda não está
 
 ## 6. Riscos aceitos no MVP
 
+- **Dados fora do Brasil nesta fase.** A assinatura de avaliação não tinha cota de App Service em Brazil South, então o ambiente está em West US 3 (EUA). O Aviso de Privacidade informa isso. O MVP opera com dados de demonstração; antes de receber estudantes reais o ambiente deve ser recriado em Brazil South.
 - A faixa de idade é autodeclarada.
 - SQLite não tem cifragem do arquivo inteiro; o campo sensível (e-mail) é cifrado na aplicação e o disco do App Service é cifrado em repouso pela plataforma.
 - O link de consentimento leva o token no endereço. Ele é excluído da telemetria do Application Insights (`OTEL_PYTHON_FLASK_EXCLUDED_URLS`), mas aparece nos logs HTTP da plataforma, que também registram o IP de origem. Mitigação: token de uso único, acesso ao Log Analytics restrito por RBAC e retenção de 30 dias.

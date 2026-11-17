@@ -69,7 +69,8 @@
 <figure class="diagrama"><img src="{{DIAGRAMA}}" alt="Diagrama da arquitetura"><figcaption>Componentes, fluxo de deploy e integrações com as outras disciplinas.</figcaption></figure>
 <table>
   <tr><th style="width:28%">Decisão</th><th>Justificativa</th></tr>
-  <tr><td>App Service Linux (PaaS), Brazil South</td><td>Serviço visto no semestre; HTTPS, TLS e identidade gerenciada sem administrar servidor; dados de menores ficam no Brasil.</td></tr>
+  <tr><td>App Service Linux (PaaS)</td><td>Serviço visto no semestre; HTTPS, TLS e identidade gerenciada sem administrar servidor.</td></tr>
+  <tr><td>Região West US 3 (provisória)</td><td>A preferência é Brazil South, para manter dados de menores no Brasil, mas a assinatura de avaliação tinha cota zero de App Service ali. O Aviso de Privacidade informa a região real; migrar para Brazil South é pré-requisito do piloto com estudantes reais.</td></tr>
   <tr><td>HTML renderizado no servidor</td><td>Páginas de poucos kB, sem scripts de terceiros: funcionam em celular de entrada e conexão ruim.</td></tr>
   <tr><td>SQLite em <code>/home/data</code></td><td>Custo zero e nenhuma credencial de banco. Uso de ORM permite migrar para PostgreSQL trocando uma variável.</td></tr>
   <tr><td>Key Vault + Managed Identity</td><td>Nenhum segredo no código, no repositório ou no pipeline.</td></tr>
@@ -156,7 +157,7 @@
 
 <h2>6. Estimativa de custo</h2>
 <p class="pontos">Critério: Custo e documentação — 1,5 ponto</p>
-<p class="nota"><span class="falta">CONFIRMAR NA CALCULADORA</span> Valores aproximados de lista, em dólar; substituir pelos números da Calculadora de Preços da Azure para Brazil South.</p>
+<p class="nota"><span class="falta">CONFIRMAR NA CALCULADORA</span> Valores aproximados de lista, em dólar; substituir pelos números da Calculadora de Preços da Azure para West US 3.</p>
 <table>
   <tr><th>Recurso</th><th>Configuração</th><th>Custo mensal aproximado</th></tr>
   <tr><td>App Service Plan Linux</td><td>B1, 1 instância, 730 h</td><td>US$ 13 a 19</td></tr>

@@ -1,6 +1,6 @@
 # Estimativa de custo mensal
 
-> **Importante:** os valores abaixo são preços de lista aproximados (pagamento conforme o uso, em dólar) que conhecíamos ao escrever este documento. Preços mudam e variam por região. Antes de entregar, refaça a conta na [Calculadora de Preços da Azure](https://azure.microsoft.com/pricing/calculator/) para a região **Brazil South**, substitua os números e anexe o print da calculadora ao PDF.
+> **Importante:** os valores abaixo são preços de lista aproximados (pagamento conforme o uso, em dólar) que conhecíamos ao escrever este documento. Preços mudam e variam por região. Antes de entregar, refaça a conta na [Calculadora de Preços da Azure](https://azure.microsoft.com/pricing/calculator/) para a região **West US 3** (onde o ambiente foi criado), substitua os números e anexe o print da calculadora ao PDF.
 
 ## Cenário 1 — MVP em avaliação (o que o script cria)
 

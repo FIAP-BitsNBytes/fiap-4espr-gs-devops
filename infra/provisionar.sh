@@ -11,7 +11,7 @@ set -euo pipefail
 # ------------------------- parâmetros -------------------------
 EMAIL_ALERTA="${EMAIL_ALERTA:?Informe EMAIL_ALERTA (um ou mais e-mails separados por espaço)}"
 LEITORES="${LEITORES:-}"            # e-mails (contas Entra ID) que recebem papel Reader no RG
-LOCAL="${LOCAL:-brazilsouth}"       # dados de menores ficam no Brasil
+LOCAL="${LOCAL:-brazilsouth}"       # preferência: Brasil. Sem cota? rode com LOCAL=westus3 (ou outra região)
 SKU="${SKU:-B1}"                    # B1 = Always On + Health Check; F1 = gratuito, sem Always On
 ORCAMENTO_USD="${ORCAMENTO_USD:-30}"
 PREFIXO="${PREFIXO:-apoioescolar}"

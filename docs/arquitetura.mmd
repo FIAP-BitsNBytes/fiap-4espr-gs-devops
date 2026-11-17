@@ -9,7 +9,7 @@ flowchart LR
     REPO[Repositório público]
     ACT[GitHub Actions<br/>lint · testes · bandit · pip-audit<br/>gitleaks · deploy · smoke test]
   end
-  subgraph AZ[Azure · Resource Group rg-apoio-escolar-gs · Brazil South]
+  subgraph AZ[Azure · Resource Group rg-apoio-escolar-gs · West US 3]
     APP[App Service Linux<br/>Flask + gunicorn<br/>HTTPS only · TLS 1.2 · Health Check]
     DB[(SQLite em /home/data<br/>contato cifrado com Fernet)]
     KV[Key Vault<br/>segredos · RBAC]
