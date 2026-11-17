@@ -157,19 +157,19 @@
 
 <h2>6. Estimativa de custo</h2>
 <p class="pontos">Critério: Custo e documentação — 1,5 ponto</p>
-<p class="nota"><span class="falta">CONFIRMAR NA CALCULADORA</span> Valores aproximados de lista, em dólar; substituir pelos números da Calculadora de Preços da Azure para West US 3.</p>
+<p class="nota">Valores em dólar. O preço do App Service foi lido no portal da Azure para West US 3 (print abaixo); os demais itens, de baixo valor, são estimativas por preço de lista.</p>
 <table>
   <tr><th>Recurso</th><th>Configuração</th><th>Custo mensal aproximado</th></tr>
-  <tr><td>App Service Plan Linux</td><td>B1, 1 instância, 730 h</td><td>US$ 13 a 19</td></tr>
+  <tr><td>App Service Plan Linux</td><td>B1, 1 instância, West US 3</td><td>US$ 12,41 (US$ 0,017/h)</td></tr>
   <tr><td>Key Vault</td><td>Standard, poucas centenas de leituras</td><td>menos de US$ 0,10</td></tr>
   <tr><td>Log Analytics + Application Insights</td><td>Menos de 1 GB/mês, dentro da franquia</td><td>US$ 0</td></tr>
   <tr><td>Alertas de métrica</td><td>3 regras</td><td>até US$ 0,30</td></tr>
   <tr><td>Tráfego de saída, e-mails de alerta, GitHub Actions</td><td>Dentro das franquias; repositório público</td><td>US$ 0</td></tr>
-  <tr><th colspan="2">Total do MVP</th><th>≈ US$ 14 a 20 por mês</th></tr>
+  <tr><th colspan="2">Total do MVP</th><th>≈ US$ 13 por mês</th></tr>
 </table>
-<p>Controle de custo: teto diário de ingestão de logs, orçamento mensal no Resource Group, tags em todos os recursos e um script que remove tudo após a correção. Com o plano F1 o custo cai a zero, sem Always On.</p>
+<p>Controle de custo: teto diário de ingestão de logs, orçamento mensal de R$ 150 no Resource Group com aviso por e-mail em 80%, tags em todos os recursos e um script que remove tudo após a correção. O ambiente usa o crédito da conta gratuita da Azure, que suspende os serviços em vez de cobrar se o crédito acabar. Com o plano F1 o custo cai a zero, sem Always On.</p>
 <div class="dupla">
-  <figure data-print="17-calculadora.png">Calculadora de Preços da Azure.</figure>
+  <figure data-print="17-calculadora.png">Preços do App Service no portal (West US 3), com o plano B1 em uso.</figure>
   <figure data-print="18-orcamento.png">Orçamento no Cost Management.</figure>
 </div>
 
