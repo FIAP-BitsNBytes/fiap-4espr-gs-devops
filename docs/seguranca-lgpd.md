@@ -44,13 +44,18 @@ Limitação conhecida do MVP: o envio do e-mail ao responsável ainda não está
 | Identidade gerenciada do Web App | Key Vault Secrets User (só leitura) | Apenas o Key Vault |
 | Identidade do GitHub Actions (OIDC) | Website Contributor | Apenas o Web App |
 | Quem provisiona | Key Vault Secrets Officer | Apenas o Key Vault |
-| Professor e demais integrantes | Reader | Resource Group |
+| Integrante da equipe (convidado no diretório) | Contributor | Resource Group |
+| O mesmo integrante | Key Vault Secrets Officer | Apenas o Key Vault |
+| O mesmo integrante | Role Based Access Control Administrator, com condição: só pode atribuir Website Contributor, Reader e Key Vault Secrets User | Resource Group |
+
+O acesso de administração de papéis foi delegado com condição (ABAC): quem o recebe consegue distribuir apenas três papéis de baixo privilégio, e não pode se promover a Owner nem conceder Contributor. Leitura para o professor ou outros integrantes pode ser concedida por esse caminho (papel Reader), convidando a conta como usuário externo.
 
 ## 4. Segredos fora do código
 
 - Nenhum segredo no repositório: `gitleaks` roda a cada commit e `.gitignore` bloqueia `.env`, bancos e publish profiles.
 - `SECRET_KEY`, `FERNET_KEY`, `ADMIN_PASSWORD` e `INTEGRATION_API_KEY` são gerados pelo script direto no Key Vault, sem aparecer na tela.
-- O App Service lê por **referência ao Key Vault** (`@Microsoft.KeyVault(...)`) usando a identidade gerenciada.
+- O App Service lê por **referência ao Key Vault** (`@Microsoft.KeyVault(...)`) usando a identidade gerenciada, que só tem permissão de leitura.
+- Duas pessoas da equipe administram o cofre (Key Vault Secrets Officer); ninguém mais lê os valores.
 - Em produção a aplicação **não sobe** se `SECRET_KEY` ou `FERNET_KEY` faltarem.
 - O deploy usa OIDC: o GitHub guarda só identificadores (client, tenant, subscription), que não são segredos.
 

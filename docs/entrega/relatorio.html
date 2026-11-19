@@ -119,11 +119,13 @@
   <tr><td>Identidade gerenciada do Web App</td><td>Key Vault Secrets User (leitura)</td><td>Somente o Key Vault</td></tr>
   <tr><td>GitHub Actions (OIDC)</td><td>Website Contributor</td><td>Somente o Web App</td></tr>
   <tr><td>Quem provisiona</td><td>Key Vault Secrets Officer</td><td>Somente o Key Vault</td></tr>
-  <tr><td>Professor e integrantes</td><td>Reader</td><td>Resource Group</td></tr>
+  <tr><td>Integrante da equipe (convidado)</td><td>Contributor</td><td>Resource Group</td></tr>
+  <tr><td>O mesmo integrante</td><td>Key Vault Secrets Officer</td><td>Somente o Key Vault</td></tr>
+  <tr><td>O mesmo integrante</td><td>RBAC Administrator com condição: só atribui Website Contributor, Reader e Key Vault Secrets User</td><td>Resource Group</td></tr>
 </table>
 <p>Dentro da aplicação há três papéis: aluno, voluntário (precisa de aprovação) e coordenação. O voluntário vê só apelido e série dos inscritos; a coordenação vê indicadores agregados, com grupos menores que 5 ocultos.</p>
 <div class="dupla">
-  <figure data-print="10-iam-rbac.png">Atribuições de papel (IAM).</figure>
+  <figure data-print="10-iam-rbac.png">Atribuições de papel no Key Vault (IAM), incluindo a delegação com condição.</figure>
   <figure data-print="11-oidc-federado.png">Credencial federada do GitHub (OIDC).</figure>
 </div>
 <h3>Proteção de dados de menores</h3>
